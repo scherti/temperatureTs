@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.5'
 
 services:
   app:
@@ -11,12 +11,12 @@ services:
       - NODE_ENV=local
       - HEALTHCHECK_ALLOWED_IP=
       - LOG_LEVEL=info
-      - KAFKA_BROKERS=[IP-ADDRESS]:9093
-      - REGISTRY_URL=http://10.11.64.232:8081/
-      - KAFKA_PERSIST_REGISTERED_SCHEMES=true
-      - KAFKA_SSL_CA=
-      - KAFKA_SSL_KEY=
-      - KAFKA_SSL_CERT=
+#      - KAFKA_BROKERS=[IP-ADDRESS]:9093
+#      - REGISTRY_URL=http://10.11.64.232:8081/
+#      - KAFKA_PERSIST_REGISTERED_SCHEMES=true
+#      - KAFKA_SSL_CA=
+#      - KAFKA_SSL_KEY=
+#      - KAFKA_SSL_CERT=
       - TYPEORM_HOST=database
       - TYPEORM_USERNAME=temperatureTs
       - TYPEORM_PASSWORD=temperatureTs

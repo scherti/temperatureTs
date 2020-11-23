@@ -3,7 +3,7 @@ FROM node:10-buster AS node-tester
 ENV NODE_ENV development
 
 # install node modules prior to sources, so docker caching is able to kick in when packages are unchanged
-COPY package*.json yarn.lock /app/
+COPY package.json /app/
 WORKDIR /app
 #RUN yarn install --frozen-lockfile
 RUN yarn install
@@ -16,6 +16,7 @@ COPY ./src /app/src
 COPY ./tsconfig.json /app/
 
 RUN yarn build
+RUN yarn copy-template
 
 FROM node:10-buster-slim
 ENV NODE_ENV production
@@ -30,8 +31,8 @@ RUN apt-get update && \
 WORKDIR /usr/src
 
 COPY --from=node-builder /app/package.json /usr/src
-COPY --from=node-builder /app/yarn.lock /usr/src
 COPY --from=node-builder /app/bin /usr/src/bin
+COPY --from=node-builder /app/src/routes/index.html /usr/src/dist/routes
 
 RUN yarn install --frozen-lockfile --production=true
 

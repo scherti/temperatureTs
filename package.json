@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@types/commander": "^2.12.2",
-    "@types/express": "^4.17.7",
     "@types/node": "^14.6.0",
     "@types/redis": "^2.8.26",
     "rimraf": "^3.0.2",

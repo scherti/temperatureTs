@@ -37,9 +37,9 @@
 
 <script>
   function example() {
-
+    const hostName = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port ;
     const now = Date.now();
-    const url = `http://localhost:3000/temperatureData?startDate=1&endDate=${now}`;
+    const url = hostName + `/temperatureData?startDate=1&endDate=${now}`;
     axios.get(url)
     .then((response) => {
           var ctx = document.getElementById('myChart').getContext('2d');
@@ -112,5 +112,5 @@
     )
   }
 
-  setInterval(example, 1000);
+  setInterval(example, 5000);
 </script>
