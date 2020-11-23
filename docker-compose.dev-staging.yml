@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8090:3000
+    environment:
+      - NODE_ENV=local
+      - HEALTHCHECK_ALLOWED_IP=
+      - LOG_LEVEL=info
+      - KAFKA_BROKERS=b-1.msk-staging.yltrif.c4.kafka.eu-central-1.amazonaws.com:9094,b-2.msk-staging.yltrif.c4.kafka.eu-central-1.amazonaws.com:9094
+      - REGISTRY_URL=http://10.11.64.232:8081/
+      - KAFKA_PERSIST_REGISTERED_SCHEMES=true
+      - KAFKA_SSL_CA=./msk-staging-kafka.crt
+      - KAFKA_SSL_KEY=./msk-staging-kafka.key
+      - KAFKA_SSL_CERT=./kafkacli.pem
+      - TYPEORM_HOST=database
+      - TYPEORM_USERNAME=wee
+      - TYPEORM_PASSWORD=wee_password
+      - TYPEORM_DATABASE=wee_pay_only
+      - TYPEORM_PORT=5432
+      # !!! TYPEORM_SYNCHRONIZE should always be set to false in a production environment as it rebuilds the database upon connection
+      - TYPEORM_SYNCHRONIZE=false
+      - TYPEORM_LOGGING=true
+    depends_on:
+      - database
+  database:
+    image: 'postgres'
+    environment:
+      - POSTGRES_USER=wee
+      - POSTGRES_PASSWORD=wee_password
+      - POSTGRES_DB=wee_pay_only
+    ports:
+      - 11543:5432
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+
+volumes:
+  database-data: {}

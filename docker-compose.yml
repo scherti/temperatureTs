@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8090:3000
+    environment:
+      - NODE_ENV=
+      - LOG_LEVEL=debug
+      - HEALTHCHECK_PATH=
+      - HEALTHCHECK_PORT=
+      - HEALTHCHECK_ALLOWED_IP=
+      - KAFKA_CLIENT_ID=dedified-notification-gateway
+      - REGISTRY_URL=
+      - KAFKA_BROKERS=
+      - KAFKA_SSL_CA=
+      - KAFKA_SSL_KEY=
+      - KAFKA_SSL_CERT=
+      - WEBHOOK_LISTENER_PORT=

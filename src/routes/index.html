@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sample Site</title>
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+  <style>
+    body {
+      padding-top: 50px;
+    }
+  </style>
+</head>
+
+
+<body>
+
+<script></script>
+
+
+<div class="container">
+  <div class="jumbotron">
+    <button type="button" onclick="example()">Click Me!</button>
+    <div>
+      <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
+
+<script>
+  function example() {
+
+    const now = Date.now();
+    const url = `http://localhost:3000/temperatureData?startDate=1&endDate=${now}`;
+    axios.get(url)
+    .then((response) => {
+          var ctx = document.getElementById('myChart').getContext('2d');
+          const data = new Array();
+
+          response.data.map((entry, index) => {
+            const dataValues = new Array();
+            entry.data.map((entry, index) => {
+              dataValues.push({x: entry.measurementTime, y: entry.temperatureValue});
+            });
+            data.push({
+              label: entry.label,
+              borderColor: [
+                'rgba(0 ,0,0,1)'
+              ],
+              borderWidth: 1,
+              data: dataValues
+            });
+          });
+
+          var chart = new Chart(ctx, {
+            // animation: false,
+            type: 'line',
+            data: {
+              // labels: ["2015-03-15T13:03:00Z", "2015-03-25T13:02:00Z", "2015-04-25T14:12:00Z"],
+              // labels: dateTimeLabels,
+              datasets: data,
+              // [{
+              // label: 'Demo',
+              // data: data,
+              // backgroundColor: [
+              //   'rgba(255, 99, 132, 0.2)',
+              //   'rgba(54, 162, 235, 0.2)',
+              //   'rgba(255, 206, 86, 0.2)',
+              //   'rgba(75, 192, 192, 0.2)',
+              //   'rgba(153, 102, 255, 0.2)',
+              //   'rgba(255, 159, 64, 0.2)'
+              // ],
+              // borderColor: [
+              //   'rgba(0 ,0,0,1)',
+              // 'rgba(255,99,132,1)',
+              // 'rgba(54, 162, 235, 1)',
+              // 'rgba(255, 206, 86, 1)',
+              // 'rgba(75, 192, 192, 1)',
+              // 'rgba(153, 102, 255, 1)',
+              // 'rgba(255, 159, 64, 1)'
+              // ],
+              // borderWidth: 1
+              // }]
+            },
+            options: {
+              scales: {
+                xAxes: [{
+                  type: 'time',
+                  distribution: 'linear'
+                }]
+              },
+              animation: {
+                duration: 0
+              }
+            }
+          });
+          return () => chart.destroy();
+        }
+
+        ,
+        (error) => {
+          console.log(error);
+        }
+    )
+  }
+
+  setInterval(example, 1000);
+</script>

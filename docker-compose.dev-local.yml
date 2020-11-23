@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8090:3000
+    environment:
+      - NODE_ENV=local
+      - HEALTHCHECK_ALLOWED_IP=
+      - LOG_LEVEL=info
+      - KAFKA_BROKERS=[IP-ADDRESS]:9093
+      - REGISTRY_URL=http://10.11.64.232:8081/
+      - KAFKA_PERSIST_REGISTERED_SCHEMES=true
+      - KAFKA_SSL_CA=
+      - KAFKA_SSL_KEY=
+      - KAFKA_SSL_CERT=
+      - TYPEORM_HOST=database
+      - TYPEORM_USERNAME=temperatureTs
+      - TYPEORM_PASSWORD=temperatureTs
+      - TYPEORM_DATABASE=temperatureTs
+      - TYPEORM_PORT=5432
+      # !!! TYPEORM_SYNCHRONIZE should always be set to false in a production environment as it rebuilds the database upon connection
+      - TYPEORM_SYNCHRONIZE=true
+      - TYPEORM_LOGGING=true
+    depends_on:
+      - database
+  database:
+    image: 'postgres'
+    environment:
+      - POSTGRES_USER=temperatureTs
+      - POSTGRES_PASSWORD=temperatureTs
+      - POSTGRES_DB=temperatureTs
+    ports:
+      - 11543:5432
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+
+volumes:
+  database-data: {}
